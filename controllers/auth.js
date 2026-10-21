@@ -1,25 +1,22 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-const User = require("../models/user");
-const UnauthorizedError = require("../errors/UnauthorizedError");
-const ConflictError = require("../errors/ConflictError");
+const User = require('../models/user');
+const UnauthorizedError = require('../errors/UnauthorizedError');
+const ConflictError = require('../errors/ConflictError');
 
-const JWT_SECRET =
-  process.env.JWT_SECRET || "dev-secret";
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
 
 const signup = (req, res, next) => {
   const { email, password, name } = req.body;
 
   bcrypt
     .hash(password, 10)
-    .then((hash) =>
-      User.create({
-        email,
-        password: hash,
-        name,
-      })
-    )
+    .then((hash) => User.create({
+      email,
+      password: hash,
+      name,
+    }))
     .then((user) => {
       res.status(201).send({
         _id: user._id,
@@ -31,8 +28,8 @@ const signup = (req, res, next) => {
       if (error.code === 11000) {
         return next(
           new ConflictError(
-            "Ya existe un usuario con ese correo electrónico"
-          )
+            'Ya existe un usuario con ese correo electrónico',
+          ),
         );
       }
 
@@ -44,30 +41,29 @@ const signin = (req, res, next) => {
   const { email, password } = req.body;
 
   User.findOne({ email })
-    .select("+password")
+    .select('+password')
     .then((user) => {
       if (!user) {
-  throw new UnauthorizedError(
-    "Correo electrónico o contraseña incorrectos"
-  );
-}
+        throw new UnauthorizedError(
+          'Correo electrónico o contraseña incorrectos',
+        );
+      }
 
       return bcrypt
         .compare(password, user.password)
         .then((matched) => {
-          
           if (!matched) {
-  throw new UnauthorizedError(
-    "Correo electrónico o contraseña incorrectos"
-  );
-}
+            throw new UnauthorizedError(
+              'Correo electrónico o contraseña incorrectos',
+            );
+          }
 
           const token = jwt.sign(
             { _id: user._id },
             JWT_SECRET,
             {
-              expiresIn: "7d",
-            }
+              expiresIn: '7d',
+            },
           );
 
           res.send({ token });

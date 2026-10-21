@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
+const mongoose = require('mongoose');
+const validator = require('validator');
 
 const favoriteSchema = new mongoose.Schema({
   pokemonId: {
@@ -17,7 +17,7 @@ const favoriteSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => validator.isURL(value),
-      message: "La imagen debe ser una URL válida",
+      message: 'La imagen debe ser una URL válida',
     },
   },
 
@@ -28,13 +28,13 @@ const favoriteSchema = new mongoose.Schema({
 
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: 'user',
     required: true,
     select: false,
   },
 });
 
 module.exports = mongoose.model(
-  "favorite",
-  favoriteSchema
+  'favorite',
+  favoriteSchema,
 );

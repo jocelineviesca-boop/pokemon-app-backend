@@ -1,29 +1,29 @@
-require("dotenv").config();
+require('dotenv').config();
 
-const express = require("express");
-const mongoose = require("mongoose");
+const express = require('express');
+const mongoose = require('mongoose');
 
-const NotFoundError = require("./errors/NotFoundError");
-const favoritesRouter = require("./routes/favorites");
-const auth = require("./middlewares/auth");
-const usersRouter = require("./routes/users");
-const errorHandler = require("./middlewares/error-handler");
-const { errors } = require("celebrate");
+const { errors } = require('celebrate');
+const NotFoundError = require('./errors/NotFoundError');
+const favoritesRouter = require('./routes/favorites');
+const auth = require('./middlewares/auth');
+const usersRouter = require('./routes/users');
+const errorHandler = require('./middlewares/error-handler');
 
 const {
   signup,
   signin,
-} = require("./controllers/auth");
+} = require('./controllers/auth');
 
 const {
   validateSignup,
   validateSignin,
-} = require("./middlewares/validation");
+} = require('./middlewares/validation');
 
 const {
   requestLogger,
   errorLogger,
-} = require("./middlewares/logger");
+} = require('./middlewares/logger');
 
 const app = express();
 
@@ -32,40 +32,40 @@ const PORT = 3000;
 app.use(express.json());
 app.use(requestLogger);
 
-app.post("/signup", validateSignup, signup);
-app.post("/signin", validateSignin, signin);
+app.post('/signup', validateSignup, signup);
+app.post('/signin', validateSignin, signin);
 
-app.use("/users", auth, usersRouter);
-app.use("/favorites", auth, favoritesRouter);
+app.use('/users', auth, usersRouter);
+app.use('/favorites', auth, favoritesRouter);
 
-app.get("/", (req, res) => {
-  res.send("Pokemon App API funcionando");
+app.get('/', (req, res) => {
+  res.send('Pokemon App API funcionando');
 });
 
 app.use((req, res, next) => {
-  next(new NotFoundError("Recurso solicitado no encontrado"));
+  next(new NotFoundError('Recurso solicitado no encontrado'));
 });
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/pokemon_app")
+  .connect('mongodb://127.0.0.1:27017/pokemon_app')
   .then(() => {
-    console.log("Conectado a MongoDB");
+    console.log('Conectado a MongoDB');
   })
   .catch((error) => {
     console.error(
-      "Error al conectar con MongoDB:",
-      error
+      'Error al conectar con MongoDB:',
+      error,
     );
   });
 
 app.use(errorLogger);
-  
+
 app.use(errors());
 
-app.use(errorHandler);  
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(
-    `Servidor corriendo en el puerto ${PORT}`
+    `Servidor corriendo en el puerto ${PORT}`,
   );
 });

@@ -1,28 +1,28 @@
-const router = require("express").Router();
+const router = require('express').Router();
 
 const {
   getFavorites,
   createFavorite,
   deleteFavorite,
-} = require("../controllers/favorites");
+} = require('../controllers/favorites');
 
 const {
   validateCreateFavorite,
   validateFavoriteId,
-} = require("../middlewares/validation");
+} = require('../middlewares/validation');
 
-router.get("/", getFavorites);
+router.get('/', getFavorites);
 
 router.post(
-  "/",
+  '/',
   validateCreateFavorite,
-  createFavorite
+  createFavorite,
 );
 
 router.delete(
-  "/:favoriteId",
+  '/:favoriteId',
   validateFavoriteId,
-  deleteFavorite
+  deleteFavorite,
 );
 
 module.exports = router;
