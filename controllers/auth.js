@@ -6,9 +6,7 @@ const UnauthorizedError = require("../errors/UnauthorizedError");
 const ConflictError = require("../errors/ConflictError");
 
 const JWT_SECRET =
-  process.env.NODE_ENV === "production"
-    ? process.env.JWT_SECRET
-    : "dev-secret";
+  process.env.JWT_SECRET || "dev-secret";
 
 const signup = (req, res, next) => {
   const { email, password, name } = req.body;

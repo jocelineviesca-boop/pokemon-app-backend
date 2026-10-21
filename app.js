@@ -1,6 +1,9 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 
+const NotFoundError = require("./errors/NotFoundError");
 const favoritesRouter = require("./routes/favorites");
 const auth = require("./middlewares/auth");
 const usersRouter = require("./routes/users");
@@ -37,6 +40,10 @@ app.use("/favorites", auth, favoritesRouter);
 
 app.get("/", (req, res) => {
   res.send("Pokemon App API funcionando");
+});
+
+app.use((req, res, next) => {
+  next(new NotFoundError("Recurso solicitado no encontrado"));
 });
 
 mongoose
