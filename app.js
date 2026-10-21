@@ -27,7 +27,11 @@ const {
 
 const app = express();
 
-const PORT = 3000;
+const { PORT = 3000 } = process.env;
+
+const {
+  MONGODB_URI = 'mongodb://127.0.0.1:27017/pokemon_app',
+} = process.env;
 
 app.use(express.json());
 app.use(requestLogger);
@@ -47,15 +51,12 @@ app.use((req, res, next) => {
 });
 
 mongoose
-  .connect('mongodb://127.0.0.1:27017/pokemon_app')
+  .connect(MONGODB_URI)
   .then(() => {
     console.log('Conectado a MongoDB');
   })
   .catch((error) => {
-    console.error(
-      'Error al conectar con MongoDB:',
-      error,
-    );
+    console.error('Error al conectar con MongoDB:', error);
   });
 
 app.use(errorLogger);
