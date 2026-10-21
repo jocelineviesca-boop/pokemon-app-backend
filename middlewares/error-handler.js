@@ -1,4 +1,4 @@
-const errorHandler = (err, req, res, next) => { // eslint-disable-line no-unused-vars
+const errorHandler = (err, req, res, _next) => {
   const { statusCode = 500, message } = err;
 
   res.status(statusCode).send({
