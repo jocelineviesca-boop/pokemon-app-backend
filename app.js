@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const { errors } = require('celebrate');
 const NotFoundError = require('./errors/NotFoundError');
@@ -9,7 +10,6 @@ const favoritesRouter = require('./routes/favorites');
 const auth = require('./middlewares/auth');
 const usersRouter = require('./routes/users');
 const errorHandler = require('./middlewares/error-handler');
-const cors = require("cors");
 
 const {
   signup,
