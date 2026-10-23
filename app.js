@@ -9,6 +9,7 @@ const favoritesRouter = require('./routes/favorites');
 const auth = require('./middlewares/auth');
 const usersRouter = require('./routes/users');
 const errorHandler = require('./middlewares/error-handler');
+const cors = require("cors");
 
 const {
   signup,
@@ -32,6 +33,8 @@ const { PORT = 3000 } = process.env;
 const {
   MONGODB_URI = 'mongodb://127.0.0.1:27017/pokemon_app',
 } = process.env;
+
+app.use(cors());
 
 app.use(express.json());
 app.use(requestLogger);
